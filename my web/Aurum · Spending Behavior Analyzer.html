@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aurum · Spending Behavior Analyzer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+:root{--bk:#070604;--bk2:#0e0c08;--gold:#D4AF37;--gold2:#F3D98B;--tx:#EDE6D3;--mu:#B8AD93;--ln:rgba(212,175,55,.24);--serif:'Manrope','Segoe UI',Arial,sans-serif;--sans:'Manrope','Segoe UI',Arial,sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:dark}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:70px}
+body{margin:0;background:var(--bk);color:var(--tx);font:400 16px/1.6 var(--sans)}
+h1,h2,h3,.serif{font-family:var(--serif);font-weight:600;letter-spacing:.005em}
+.nav{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:20;display:flex;justify-content:space-between;align-items:center;padding:16px 28px;background:linear-gradient(#070604cc,transparent);backdrop-filter:blur(6px)}
+.nav a{color:var(--tx);text-decoration:none;margin-left:26px;font-size:14px;letter-spacing:.06em}
+.nav a:hover{color:var(--gold2)}
+.logo{font:600 26px var(--serif);color:var(--gold2);letter-spacing:.14em;margin:0!important}
+.hero{position:relative;min-height:100vh;min-height:100svh;display:flex;align-items:center;overflow:hidden}
+#c{position:absolute;inset:0;width:100%;height:100%}
+.veil{position:absolute;inset:0;background:linear-gradient(90deg,#070604 8%,#070604aa 45%,transparent 80%),radial-gradient(ellipse at 50% 120%,#070604,transparent 60%);pointer-events:none}
+.hc{position:relative;max-width:1120px;margin:0 auto;padding:0 28px;width:100%}
+.hc h1{font-size:clamp(38px,6.6vw,84px);line-height:1.05;margin:0 0 22px;max-width:11em;font-weight:700;letter-spacing:-.02em}
+.hc h1 span{display:block}.gold{color:var(--gold2)}
+.hc p{max-width:34em;color:var(--mu);font-size:18px;margin:0 0 34px}
+.btn{display:inline-block;border:1px solid var(--gold);color:var(--gold2);background:transparent;padding:13px 28px;font:600 13px var(--sans);letter-spacing:.16em;text-transform:uppercase;text-decoration:none;cursor:pointer;transition:background .3s,color .3s,box-shadow .3s}
+.btn:hover{background:var(--gold);color:#120e03;box-shadow:0 0 28px #d4af3755}
+.btn+.btn{margin-left:14px}
+.sec{max-width:1120px;margin:0 auto;padding:110px 28px 0}
+.sec h2{font-size:clamp(34px,5vw,58px);line-height:1.05;margin:0 0 10px}
+.sub{color:var(--mu);max-width:36em;margin:0 0 40px}
+.rule{height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:0 0 26px;transform-origin:left}
+.card{background:linear-gradient(150deg,#15120b,#0a0806);border:1px solid var(--ln);padding:26px;box-shadow:0 30px 60px -30px #000;transition:border-color .4s,transform .4s,box-shadow .4s}
+.card:hover{border-color:var(--gold);transform:translateY(-4px);box-shadow:0 36px 70px -28px #000,0 0 36px -14px #d4af3777}
+.card h3{font-size:26px;margin:0 0 4px}.lab{color:var(--mu);font-size:14px}
+.big{font:600 56px/1 var(--serif);color:var(--gold2)}
+label{display:block;color:var(--mu);font-size:13px;letter-spacing:.05em;margin:12px 0 4px}
+input,select{width:100%;background:#0a0806;border:1px solid var(--ln);color:var(--tx);padding:11px 12px;font:400 16px var(--sans);border-radius:0}
+input:focus-visible,select:focus-visible,.btn:focus-visible,a:focus-visible,button:focus-visible{outline:2px solid var(--gold2);outline-offset:2px}
+.bar{margin:11px 0}.bar .l{display:flex;justify-content:space-between;font-size:14px;margin-bottom:5px}
+.bar .t{height:6px;background:#241f12;position:relative}.bar .t i{display:block;height:100%;background:linear-gradient(90deg,var(--goldd,#8a6d1f),var(--gold2));transition:width .8s}
+.bar .t b{position:absolute;top:-4px;width:1px;height:14px;background:var(--tx)}
+.tx{display:grid;grid-template-columns:54px 1fr auto auto;gap:14px;align-items:center;padding:13px 0;border-bottom:1px solid var(--ln)}
+.tag{font-size:11px;letter-spacing:.08em;border:1px solid var(--gold);color:var(--gold2);padding:1px 7px;margin-left:8px;text-transform:uppercase}
+.del{background:none;border:0;color:var(--mu);text-decoration:underline;cursor:pointer;font:500 14px var(--sans)}
+.msg{min-height:22px;font-size:14px;color:var(--gold2);margin:8px 0 0}
+footer{margin-top:130px;border-top:1px solid var(--ln);background:radial-gradient(ellipse at 50% 0,#1c1608,var(--bk) 70%)}
+.fw{font:600 clamp(60px,14vw,170px)/1 var(--serif);letter-spacing:.12em;color:transparent;-webkit-text-stroke:1px var(--gold);text-align:center;padding:60px 0 20px}
+.burger{background:none;border:1px solid var(--ln);width:44px;height:44px;display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 11px;cursor:pointer}
+.burger span{display:block;height:2px;background:var(--gold2)}
+.scrim{position:fixed;inset:0;background:#000a;z-index:30}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:min(300px,84vw);z-index:40;background:#0b0906;border-right:1px solid var(--ln);padding:calc(28px + env(safe-area-inset-top,0px)) 26px 28px;display:flex;flex-direction:column;gap:6px;visibility:hidden;transform:translateX(-100%);transition:transform .35s,visibility .35s}
+.drawer.on{visibility:visible;transform:none}
+.drawer a{color:var(--tx);text-decoration:none;padding:12px 0;border-bottom:1px solid var(--ln);font-size:17px}
+.drawer a:hover{color:var(--gold2)}
+.nav .logo{margin-left:16px!important}
+.auth{min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:24px;background:radial-gradient(ellipse at 50% 0,#2a200a,var(--bk) 62%)}
+.authc{width:min(440px,100%);background:linear-gradient(150deg,#15120b,#0a0806);border:1px solid var(--ln);padding:34px 30px;box-shadow:0 40px 80px -30px #000}
+.authc h1{font-size:30px;margin:14px 0 6px}
+.tabs{display:flex;margin:18px 0 4px;border-bottom:1px solid var(--ln)}
+.tabs button{flex:1;background:none;border:0;color:var(--mu);padding:12px;font:600 14px var(--sans);cursor:pointer;border-bottom:2px solid transparent}
+.tabs button.on{color:var(--gold2);border-color:var(--gold)}
+.opt{display:grid;grid-template-columns:90px 1fr 1fr;gap:6px 12px;padding:12px 0;border-bottom:1px solid var(--ln);font-size:14px}
+.opt .tag{margin:0;display:inline-block}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media(max-width:700px){.nav a:not(.logo):not(.keep){display:none}.btn+.btn{margin:12px 0 0}.tx{grid-template-columns:44px 1fr auto}.tx .del{grid-column:2/4;justify-self:start}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdn.jsdelivr.net/npm/react@18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/react-dom@18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/htm@3.1.1/dist/htm.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+const h=htm.bind(React.createElement),RM=matchMedia('(prefers-reduced-motion:reduce)').matches;
+const NEED={Food:1,Transport:1,Bills:1,Health:1,Education:1},CATS=['Food','Transport','Shopping','Bills','Fun','Education','Health'];
+const SYN={Food:/food|lunch|dinner|breakfast|cafe|snack|biryani|tea|coffee|meal/,Transport:/bus|auto|metro|cab|uber|fuel|petrol|train/,Shopping:/shop|order|amazon|cloth|shoe|buy/,Bills:/bill|rent|recharge|fee|wifi/,Fun:/movie|game|gaming|concert|party|netflix/,Education:/course|book|exam|class|study/,Health:/medicine|pharmacy|doctor|gym/};
+const pad=n=>String(n).padStart(2,'0'),iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const now=new Date(),Y=now.getFullYear(),M=now.getMonth(),TD=now.getDate(),DIM=new Date(Y,M+1,0).getDate();
+const fmt=n=>'₹'+Math.round(n).toLocaleString('en-IN'),sum=a=>a.reduce((t,x)=>t+x.amt,0);
+const inM=x=>{const d=new Date(x.date+'T00:00:00');return d.getFullYear()===Y&&d.getMonth()===M};
+const SEED=[[1,4500,'Bills','Hostel fee share',0],[2,320,'Food','Canteen lunch',0],[3,180,'Transport','Metro card',0],[4,899,'Shopping','Headphones sale',1],[5,450,'Fun','Movie night',1],[6,260,'Food','Biryani',1],[8,650,'Education','Course subscription',0],[9,210,'Food','Mess extras',0],[10,1299,'Shopping','Sneakers',1],[12,150,'Transport','Auto',0],[13,1450,'Food','Friends dinner',1],[14,500,'Fun','Gaming top-up',1],[16,240,'Food','Snacks',1],[18,320,'Health','Pharmacy',0],[19,199,'Bills','Phone recharge',0],[20,720,'Fun','Concert ticket',1],[22,290,'Food','Cafe',1],[24,170,'Transport','Bus pass',0],[25,1100,'Shopping','Online order',1],[26,350,'Food','Weekend brunch',1],[27,130,'Food','Tea and snacks',0]].map((s,i)=>({id:i+1,date:Y+'-'+pad(M+1)+'-'+pad(Math.min(s[0],TD)),amt:s[1],cat:s[2],note:s[3],imp:!!s[4]}));
+const DEF={items:SEED,income:25000,budget:15000,goal:60000,saved:15000};
+const load=()=>{try{const r=JSON.parse(localStorage.getItem('aurum-v1'));if(r&&r.items)return Object.assign({},DEF,r)}catch(e){}return DEF};
+const save=s=>{try{localStorage.setItem('aurum-v1',JSON.stringify(s))}catch(e){}};
+function parse(t){const a=t.match(/\d+(\.\d+)?/);if(!a)return null;const l=t.toLowerCase();let cat='Food';for(const k in SYN)if(SYN[k].test(l)){cat=k;break}
+ return{amt:+a[0],cat,imp:/impulse|unplanned/.test(l),note:t.replace(a[0],'').replace(/impulse|unplanned/ig,'').replace(/\s+/g,' ').trim()||cat}}
+function calc(S){
+ const m=S.items.filter(inM),tot=sum(m),inc=S.income||1,bud=S.budget||1,imp=sum(m.filter(x=>x.imp)),ip=tot?imp/tot*100:0;
+ const byC={};m.forEach(x=>byC[x.cat]=(byC[x.cat]||0)+x.amt);
+ const proj=tot/TD*DIM,needs=sum(m.filter(x=>NEED[x.cat])),wants=tot-needs,sr=(inc-proj)/inc,left=DIM-TD+1;
+ let sc=100;sc-=proj>bud?Math.min(35,(proj/bud-1)*100):0;sc-=Math.min(25,ip*.4);sc-=Math.max(0,Math.min(20,(wants/inc-.3)*100));sc-=sr<.2?Math.min(20,(.2-sr)*100):0;
+ sc=Math.round(Math.max(0,Math.min(100,sc)));
+ const an={};m.forEach(x=>{const o=S.items.filter(y=>y.cat===x.cat&&y.id!==x.id);if(o.length>=2&&x.amt>500&&x.amt>2*sum(o)/o.length)an[x.id]=1});
+ const safe=Math.max(0,(bud-tot)/left),mon=Math.max(0,inc-proj);
+ const coach=[];
+ if(proj>bud)coach.push('At this pace you’ll overshoot by '+fmt(proj-bud)+'. Trimming '+fmt((proj-bud)/left)+' a day lands you on budget.');
+ if(ip>40)coach.push('Unplanned purchases are '+Math.round(ip)+'% of your spending. A 24-hour wait on non-essentials could have saved up to '+fmt(imp)+'.');
+ if(Object.keys(an).length)coach.push(Object.keys(an).length+' unusually large expense'+(Object.keys(an).length>1?'s':'')+' flagged against your own category averages. Review them in the ledger.');
+ if(!coach.length)coach.push('Your spending is planned and within budget. Moving the surplus into your goal would speed it up.');
+ return{m,tot,byC,proj,needs,wants,sr,sc,an,safe,mon,coach,ip,gm:S.goal>S.saved?(mon>0?Math.ceil((S.goal-S.saved)/mon):null):0};
+}
+function hero(cv){
+ let R;try{R=new THREE.WebGLRenderer({canvas:cv,antialias:true,alpha:true,powerPreference:'high-performance'})}catch(e){return}
+ R.setPixelRatio(Math.min(devicePixelRatio,1.75));R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=1.15;R.outputEncoding=THREE.sRGBEncoding;
+ const sc=new THREE.Scene(),cam=new THREE.PerspectiveCamera(38,1,.1,60);
+ const es=new THREE.Scene();es.add(new THREE.Mesh(new THREE.BoxGeometry(24,24,24),new THREE.MeshBasicMaterial({color:0x060504,side:THREE.BackSide})));
+ [[-6,5,3,0xffe3a0,7],[7,3,-2,0xffc860,5],[0,9,6,0xfff4d6,9],[0,-2,9,0xb8862b,4]].forEach(a=>{const m=new THREE.Mesh(new THREE.PlaneGeometry(a[4],a[4]),new THREE.MeshBasicMaterial({color:new THREE.Color(a[3]).multiplyScalar(3),side:THREE.DoubleSide}));m.position.set(a[0],a[1],a[2]);m.lookAt(0,0,0);es.add(m)});
+ sc.environment=new THREE.PMREMGenerator(R).fromScene(es,.03).texture;
+ const gold=new THREE.MeshStandardMaterial({color:0xD4AF37,metalness:1,roughness:.2,envMapIntensity:1.35});
+ const mkS=()=>{const g=new THREE.Group();g.add(new THREE.Mesh(new THREE.TorusKnotGeometry(1,.3,240,36,2,3),gold));const r=new THREE.Mesh(new THREE.TorusGeometry(1.75,.025,16,120),gold);r.rotation.x=1.2;g.add(r);return g};
+ const S=mkS(),Rf=mkS();Rf.traverse(o=>{if(o.isMesh){o.material=gold.clone();o.material.transparent=true;o.material.opacity=.2;o.material.depthWrite=false}});Rf.scale.y=-1;Rf.renderOrder=2;
+ const fl=new THREE.Mesh(new THREE.CircleGeometry(9,72),new THREE.MeshStandardMaterial({color:0x050403,metalness:.9,roughness:.2,transparent:true,opacity:.78,depthWrite:false}));fl.rotation.x=-Math.PI/2;fl.position.y=-1.9;fl.renderOrder=1;
+ const root=new THREE.Group();root.add(S,Rf,fl);sc.add(root);
+ sc.add(new THREE.AmbientLight(0xffe9b8,.25));const pl=new THREE.PointLight(0xffd27a,60,20);pl.position.set(-3,4,4);sc.add(pl);
+ const rays=new THREE.Group();for(let i=0;i<3;i++){const c=new THREE.Mesh(new THREE.ConeGeometry(1.5,10,32,1,true),new THREE.MeshBasicMaterial({color:0xf3d98b,transparent:true,opacity:.05,blending:THREE.AdditiveBlending,side:THREE.DoubleSide,depthWrite:false}));c.position.set(-2+i*2.4,4,-1);c.rotation.z=.35-i*.3;rays.add(c)}sc.add(rays);
+ const N=380,pos=new Float32Array(N*3),sp=[];for(let i=0;i<N;i++){pos.set([(Math.random()-.5)*14,Math.random()*8-2,(Math.random()-.5)*10],i*3);sp.push(.15+Math.random()*.4)}
+ const pg=new THREE.BufferGeometry();pg.setAttribute('position',new THREE.BufferAttribute(pos,3));
+ sc.add(new THREE.Points(pg,new THREE.PointsMaterial({color:0xf3d98b,size:.04,transparent:true,opacity:.75,blending:THREE.AdditiveBlending,depthWrite:false})));
+ let mx=0,my=0,vis=true,raf=0,W=1,t0=performance.now();
+ addEventListener('pointermove',e=>{mx=e.clientX/innerWidth-.5;my=e.clientY/innerHeight-.5},{passive:true});
+ const rs=()=>{const w=cv.clientWidth,hh=cv.clientHeight;W=w;R.setSize(w,hh,false);cam.aspect=w/hh;cam.updateProjectionMatrix();const wide=w>820;root.position.x=wide?2.5:0;root.position.y=wide?0:1.1;root.scale.setScalar(wide?1:.78)};
+ new ResizeObserver(rs).observe(cv);rs();
+ const loop=()=>{raf=0;if(!vis)return;const t=(performance.now()-t0)/1000,k=RM?0:1,sy=Math.min(scrollY/innerHeight,1.2);
+  const y=.15+Math.sin(t*.8)*.09*k;S.position.y=y;Rf.position.y=2*-1.9-y;S.rotation.y=Rf.rotation.y=t*.32*k;S.rotation.x=Rf.rotation.x=-.2+Math.sin(t*.4)*.06*k;
+  rays.rotation.y=t*.05*k;const p=pg.attributes.position;for(let i=0;i<N;i++){let v=p.getY(i)+sp[i]*.004*k;if(v>6)v=-2;p.setY(i,v)}p.needsUpdate=true;
+  cam.position.x+=(mx*1.2-cam.position.x)*.04;cam.position.y+=(.7-my*.6-sy*.6-cam.position.y)*.04;cam.position.z+=(7.2+sy*2.8-cam.position.z)*.06;cam.lookAt(root.position.x*.4,-.1,0);
+  R.render(sc,cam);raf=requestAnimationFrame(loop)};
+ new IntersectionObserver(e=>{vis=e[0].isIntersecting;if(vis&&!raf)raf=requestAnimationFrame(loop)}).observe(cv);
+ raf=requestAnimationFrame(loop);
+}
+function anim(){
+ if(RM)return;gsap.registerPlugin(ScrollTrigger);
+ gsap.from('.hc h1 span',{yPercent:60,opacity:0,duration:1.4,stagger:.18,ease:'power4.out',delay:.2});
+ gsap.from('.hc p,.hc .ctas',{y:24,opacity:0,duration:1.2,stagger:.15,delay:.9,ease:'power3.out'});
+ gsap.to('.hc',{yPercent:-14,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+ gsap.utils.toArray('.rv').forEach(el=>gsap.from(el,{y:50,opacity:0,duration:1.1,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 90%'}}));
+ gsap.utils.toArray('.rule').forEach(el=>gsap.from(el,{scaleX:0,duration:1.4,ease:'power3.out',scrollTrigger:{trigger:el,start:'top 92%'}}));
+}
+function Bar(l,v,mx,txt,mark){return h`<div className="bar"><div className="l"><span>${l}</span><span>${txt}</span></div><div className="t"><i style=${{width:Math.min(100,v/mx*100)+'%'}}></i>${mark!=null&&h`<b style=${{left:mark+'%'}}></b>`}</div></div>`}
+function App({user,out}){
+ const [open,setOpen]=React.useState(false),[S,setS]=React.useState(load),[F,setF]=React.useState({amt:'',cat:'Food',note:'',imp:false,date:iso(now)}),[q,setQ]=React.useState(''),[msg,setMsg]=React.useState('');
+ React.useEffect(()=>{save(S)},[S]);
+ React.useEffect(()=>{hero(document.getElementById('c'));anim();return()=>{window.ScrollTrigger&&ScrollTrigger.getAll().forEach(t=>t.kill())}},[]);
+ React.useEffect(()=>{const k=e=>e.key==='Escape'&&setOpen(false);addEventListener('keydown',k);return()=>removeEventListener('keydown',k)},[]);
+ const C=calc(S),add=it=>setS(s=>({...s,items:[...s.items,Object.assign({id:Date.now()+Math.random(),date:iso(now)},it)]}));
+ const setf=k=>e=>setF({...F,[k]:e.target.type==='checkbox'?e.target.checked:e.target.value});
+ const num=k=>e=>{const v=+e.target.value||0;setS(k==='income'?{...S,income:v,budget:Math.round(v*.8)}:{...S,[k]:v})};
+ const submit=()=>{const a=parseFloat(F.amt);if(!(a>0)){setMsg('Enter an amount greater than 0.');return}add({amt:a,cat:F.cat,note:F.note.trim(),imp:F.imp,date:F.date||iso(now)});setF({...F,amt:'',note:'',imp:false});setMsg('Added '+fmt(a)+' to '+F.cat+'.')};
+ const quick=()=>{const p=parse(q);if(!p){setMsg('Include an amount, for example: 250 biryani with friends.');return}add(p);setQ('');setMsg('Added '+fmt(p.amt)+' to '+p.cat+'.')};
+ const R=54,ce=Object.entries(C.byC).sort((a,b)=>b[1]-a[1]),L=C.m.slice().sort((a,b)=>b.date.localeCompare(a.date)||b.id-a.id);
+ const ip=v=>Math.round(v),left=DIM-TD+1,CAPP={Food:.2,Transport:.06,Bills:.14,Health:.04,Education:.06,Shopping:.15,Fun:.15};
+ const pl=CATS.map(c=>{const cap=S.income*CAPP[c],sp=C.byC[c]||0;return{c,cap,sp,day:Math.max(0,(cap-sp)/left)}}),over=pl.filter(p=>p.sp>p.cap);
+ const D=Math.max(0,S.goal-S.saved),wantsExtra=['Shopping','Fun'].reduce((t,c)=>{const p=pl.find(x=>x.c===c);return t+Math.max(0,p.sp/TD*DIM-p.cap)},0);
+ const when=n=>new Date(Y,M+n,1).toLocaleString('en-IN',{month:'long',year:'numeric'}),emi=n=>D*.01*Math.pow(1.01,n)/(Math.pow(1.01,n)-1);
+ let vd;if(D===0)vd='You already have enough saved. Go and buy it.';else if(C.mon>0)vd='Yes, you can buy it. Saving '+fmt(C.mon)+' a month, you will own it by '+when(Math.ceil(D/C.mon))+'.';else vd='Spending is using your whole salary right now. Follow the planner limits and saving '+fmt(S.income*.2)+' a month gets you there by '+when(Math.ceil(D/Math.max(S.income*.2,1)))+'.';
+ const boost=wantsExtra>0&&D>0&&C.mon>0?'Holding Shopping and Fun to their limits frees '+fmt(wantsExtra)+' a month and moves the date to '+when(Math.ceil(D/(C.mon+wantsExtra)))+'.':'';
+ return h`<div>
+ <nav className="nav"><button className="burger" aria-label="Open menu" aria-expanded=${open} onClick=${()=>setOpen(true)}><span></span><span></span><span></span></button><a href="#top" className="logo">AURUM</a><span className="lab" style=${{marginLeft:'auto'}}>Hi, ${user.name.split(' ')[0]}</span></nav>
+ ${open&&h`<div className="scrim" onClick=${()=>setOpen(false)}></div>`}
+ <aside className=${'drawer'+(open?' on':'')} aria-label="Menu">${[['top','Home'],['analyzer','Analyzer'],['insights','Insights'],['plan','Smart planner'],['dream','Dream purchase'],['ledger','Ledger']].map(([id,l])=>h`<a key=${id} href=${'#'+id} onClick=${()=>setOpen(false)}>${l}</a>`)}<button className="btn" style=${{marginTop:20}} onClick=${out}>Log out</button></aside>
+ <header id="top" className="hero"><canvas id="c" aria-hidden="true"></canvas><div className="veil"></div>
+  <div className="hc"><h1><span>Master every</span><span className="gold">rupee with</span><span>quiet confidence.</span></h1>
+  <p>A private spending analyzer that reads your habits, scores your financial health and tells you what is safe to spend today.</p>
+  <div className="ctas"><a className="btn" href="#analyzer">Open analyzer</a><a className="btn" href="#insights">View insights</a></div></div></header>
+
+ <section id="analyzer" className="sec"><div className="rule"></div><h2 className="rv">Your month, at a glance</h2><p className="sub rv">Add an expense in plain words or with the form. Everything is stored on this device only.</p>
+  <div className="grid md:grid-cols-2 gap-6">
+   <div className="card rv"><h3>Add an expense</h3>
+    <label htmlFor="q">Quick add in plain words</label>
+    <input id="q" value=${q} placeholder="250 biryani with friends" onChange=${e=>setQ(e.target.value)} onKeyDown=${e=>e.key==='Enter'&&quick()}/>
+    <button className="btn" style=${{marginTop:12}} onClick=${quick}>Add</button>
+    <label htmlFor="a">Or use the form: amount (₹)</label><input id="a" type="number" min="1" inputMode="numeric" value=${F.amt} onChange=${setf('amt')}/>
+    <div className="grid grid-cols-2 gap-3"><div><label htmlFor="ca">Category</label><select id="ca" value=${F.cat} onChange=${setf('cat')}>${CATS.map(c=>h`<option key=${c}>${c}</option>`)}</select></div>
+    <div><label htmlFor="d">Date</label><input id="d" type="date" max=${iso(now)} value=${F.date} onChange=${setf('date')}/></div></div>
+    <label htmlFor="n">What was it?</label><input id="n" maxLength="40" value=${F.note} onChange=${setf('note')}/>
+    <label style=${{display:'flex',gap:8,alignItems:'center',color:'var(--tx)'}}><input type="checkbox" style=${{width:'auto'}} checked=${F.imp} onChange=${setf('imp')}/> Unplanned purchase</label>
+    <button className="btn" style=${{marginTop:14}} onClick=${submit}>Add expense</button><p className="msg" role="status">${msg}</p></div>
+   <div className="card rv"><h3>Financial health</h3>
+    <div style=${{display:'flex',alignItems:'center',gap:24,flexWrap:'wrap'}}>
+     <svg width="140" height="140" viewBox="0 0 140 140" role="img" aria-label=${'Health score '+C.sc+' out of 100'}><circle cx="70" cy="70" r=${R} fill="none" stroke="#241f12" strokeWidth="8"/><circle cx="70" cy="70" r=${R} fill="none" stroke="#F3D98B" strokeWidth="8" strokeLinecap="round" strokeDasharray=${2*Math.PI*R} strokeDashoffset=${2*Math.PI*R*(1-C.sc/100)} transform="rotate(-90 70 70)" style=${{transition:'stroke-dashoffset 1s'}}/><text x="70" y="80" textAnchor="middle" fill="#F3D98B" style=${{font:'600 38px var(--serif)'}}>${C.sc}</text></svg>
+     <div><div className="serif" style=${{fontSize:30}}>${C.sc>=80?'Exceptional':C.sc>=60?'Sound':C.sc>=40?'Watchful':'At risk'}</div><div className="lab">Spent ${fmt(C.tot)} of ${fmt(S.budget)}</div></div></div>
+    <div style=${{marginTop:18}}>${ce.map(([k,v])=>Bar(k,v,ce[0][1],fmt(v)+' ('+ip(v/C.tot*100)+'%)'))}</div></div></div></section>
+
+ <section id="insights" className="sec"><div className="rule"></div><h2 className="rv">Insights, curated</h2><p className="sub rv">Rules from the 50/30/20 method, forecasting and anomaly detection, applied to your own numbers.</p>
+  <div className="grid md:grid-cols-2 gap-6">
+   <div className="card rv"><h3>Safe to spend today</h3><div className="big">${fmt(C.safe)}</div><p className="lab">Projected month-end: ${fmt(C.proj)}${C.proj>S.budget?' (over budget)':' (within budget)'}</p></div>
+   <div className="card rv"><h3>50 / 30 / 20 balance</h3>
+    ${Bar('Needs (target 50%)',C.needs,S.income,ip(C.needs/S.income*100)+'%',50)}${Bar('Wants (target 30%)',C.wants,S.income,ip(C.wants/S.income*100)+'%',30)}${Bar('Savings (target 20%)',Math.max(0,S.income-C.tot),S.income,ip((S.income-C.tot)/S.income*100)+'%',20)}</div>
+   <div className="card rv"><h3>Private coach</h3>${C.coach.map((c,i)=>h`<p key=${i} style=${{margin:'10px 0',color:'var(--tx)'}}>${c}</p>`)}</div>
+   <div className="card rv"><h3>Dream fund</h3><div className="big">${C.gm===0?'Reached':C.gm?C.gm+' mo':'—'}</div><p className="lab">${C.gm===null?'Save something each month to start the clock.':'At your projected monthly saving of '+fmt(C.mon)}</p>${Bar('Saved',S.saved,S.goal||1,fmt(S.saved)+' of '+fmt(S.goal))}
+    <div className="grid grid-cols-2 gap-3">
+    <div><label htmlFor="bu">Monthly budget (₹)</label><input id="bu" type="number" value=${S.budget} onChange=${num('budget')}/></div></div></div></div></section>
+
+ <section id="plan" className="sec"><div className="rule"></div><h2 className="rv">Smart planner</h2><p className="sub rv">Enter your monthly salary. The planner splits it into a spending limit for every category, then watches your expenses against those limits.</p>
+  <div className="grid md:grid-cols-2 gap-6"><div className="card rv"><h3>Monthly salary</h3><label htmlFor="sal">Take-home salary (₹)</label><input id="sal" type="number" inputMode="numeric" value=${S.income} onChange=${num('income')}/>
+   <p className="lab" style=${{marginTop:14}}>Needs ${fmt(S.income*.5)}, wants ${fmt(S.income*.3)}, savings ${fmt(S.income*.2)}. You can spend up to ${fmt(S.budget)} and keep the rest.</p>
+   ${over.length?over.map(p=>h`<p key=${p.c} style=${{margin:'10px 0'}}>${p.c} is ${fmt(p.sp-p.cap)} over its limit. ${p.day>0?'Keep it under '+fmt(p.day)+' a day.':'Pause it for the rest of the month.'}</p>`):h`<p style=${{margin:'10px 0'}}>Every category is within its limit. Keep going.</p>`}
+   <p className="lab">The planner uses on-device rules, not a live AI model.</p></div>
+  <div className="card rv"><h3>Category limits</h3>${pl.map(p=>Bar(p.c,p.sp,p.cap||1,fmt(p.sp)+' of '+fmt(p.cap)))}</div></div></section>
+ <section id="dream" className="sec"><div className="rule"></div><h2 className="rv">Your dream purchase</h2><p className="sub rv">A laptop, a bike, a TV or anything else. Enter the price and see when you can afford it.</p>
+  <div className="grid md:grid-cols-2 gap-6"><div className="card rv"><h3>What do you want?</h3>
+   <div style=${{display:'flex',flexWrap:'wrap',gap:8,marginTop:8}}>${[['Laptop',80000],['Bike',150000],['TV',60000],['Phone',70000]].map(([n,p])=>h`<button key=${n} className="btn" style=${{padding:'8px 16px'}} onClick=${()=>setS({...S,goal:p,dream:'Dream '+n.toLowerCase()})}>${n}</button>`)}</div>
+   <label htmlFor="dn">Item name</label><input id="dn" value=${S.dream||''} onChange=${e=>setS({...S,dream:e.target.value})}/>
+   <label htmlFor="dp">Price (₹)</label><input id="dp" type="number" inputMode="numeric" value=${S.goal} onChange=${num('goal')}/>
+   <label htmlFor="ds">Already saved (₹)</label><input id="ds" type="number" inputMode="numeric" value=${S.saved} onChange=${num('saved')}/>${Bar('Saved',S.saved,S.goal||1,fmt(S.saved)+' of '+fmt(S.goal))}</div>
+   <div className="card rv"><h3>${S.dream||'Your dream item'}</h3><p style=${{fontSize:20,margin:'8px 0 6px',fontWeight:600}}>${vd}</p>${boost&&h`<p className="lab">${boost}</p>`}
+    ${D>0&&[6,12,24,36].map(n=>h`<div className="opt" key=${n}><span>${n} months<br/><span className="tag">${D/n<=C.mon?'Comfortable':D/n<=S.income*.3?'Needs cuts':'Too tight'}</span></span><span>Save ${fmt(D/n)} a month</span><span>or EMI ${fmt(emi(n))}</span></div>`)}
+    <p className="lab" style=${{marginTop:12}}>EMI figures are estimates at 12% a year. Check real rates with your lender.</p></div></div></section>
+ <section id="ledger" className="sec"><div className="rule"></div><h2 className="rv">The ledger</h2><p className="sub rv">Every expense this month. Unusual ones are flagged against your own averages.</p>
+  <div className="card rv" style=${{padding:'8px 26px'}}>${L.length?L.map(x=>h`<div className="tx" key=${x.id}><span className="lab">${x.date.slice(8)}/${x.date.slice(5,7)}</span><div>${x.note||x.cat}${x.imp&&h`<span className="tag">Unplanned</span>`}${C.an[x.id]&&h`<span className="tag">Unusual</span>`}<div className="lab">${x.cat}</div></div><strong>${fmt(x.amt)}</strong><button className="del" aria-label=${'Delete '+(x.note||x.cat)} onClick=${()=>setS({...S,items:S.items.filter(y=>y.id!==x.id)})}>Delete</button></div>`):h`<p className="lab" style=${{padding:'18px 0'}}>No expenses yet. Add one above.</p>`}</div>
+  <p style=${{marginTop:16}}><button className="del" onClick=${()=>setS(DEF)}>Reset to sample data</button> <button className="del" style=${{marginLeft:16}} onClick=${()=>setS({...S,items:[]})}>Clear everything</button></p></section>
+
+ <footer><div className="fw" aria-hidden="true">AURUM</div><div className="max-w-6xl mx-auto px-7 pb-12 flex flex-wrap justify-between gap-6 lab"><span>Private by design. Your data never leaves this device.</span><span><a href="#analyzer" style=${{color:'var(--gold2)',marginRight:20}}>Analyzer</a><a href="#insights" style=${{color:'var(--gold2)',marginRight:20}}>Insights</a><a href="#ledger" style=${{color:'var(--gold2)'}}>Ledger</a></span><span>© 2026 Aurum</span></div></footer></div>`;
+}
+function Auth({onIn}){
+ const [mode,setMode]=React.useState('login'),[f,setF]=React.useState({name:'',email:'',pw:'',pw2:'',sal:''}),[err,setErr]=React.useState('');
+ const set=k=>e=>setF({...f,[k]:e.target.value}),reg=mode==='register';
+ const users=()=>{try{return JSON.parse(localStorage.getItem('aurum-users'))||[]}catch(e){return[]}};
+ const go=()=>{const em=f.email.trim().toLowerCase();
+  if(!/^\S+@\S+\.\S+$/.test(em))return setErr('Enter a valid email address.');
+  if(f.pw.length<6)return setErr('Password must be at least 6 characters.');
+  const us=users();
+  if(reg){if(!f.name.trim())return setErr('Enter your name.');if(f.pw!==f.pw2)return setErr('Passwords do not match.');if(us.some(u=>u.email===em))return setErr('This email is already registered. Log in instead.');
+   const u={name:f.name.trim(),email:em},sal=+f.sal||0;try{localStorage.setItem('aurum-users',JSON.stringify(us.concat(u)))}catch(e){}
+   if(sal>0)save({...load(),income:sal,budget:Math.round(sal*.8)});onIn(u)}
+  else{const u=us.find(x=>x.email===em);if(!u)return setErr('No account found for this email. Register first.');onIn(u)}};
+ const fld=(k,l,t,ex)=>h`<div key=${k}><label htmlFor=${'a'+k}>${l}</label><input id=${'a'+k} type=${t||'text'} value=${f[k]} onChange=${set(k)} onKeyDown=${e=>e.key==='Enter'&&go()} ...${ex||{}}/></div>`;
+ return h`<main className="auth"><div className="authc"><div className="logo">AURUM</div><h1>${reg?'Create your account':'Welcome back'}</h1>
+  <p className="lab">Prototype only. No real account is created, and passwords are not stored or checked.</p>
+  <div className="tabs" role="tablist"><button role="tab" aria-selected=${!reg} className=${reg?'':'on'} onClick=${()=>{setMode('login');setErr('')}}>Log in</button><button role="tab" aria-selected=${reg} className=${reg?'on':''} onClick=${()=>{setMode('register');setErr('')}}>Register</button></div>
+  ${reg&&fld('name','Full name')}${fld('email','Email','email',{autoComplete:'email'})}${fld('pw','Password','password')}${reg&&fld('pw2','Confirm password','password')}${reg&&fld('sal','Monthly salary in ₹ (optional)','number',{inputMode:'numeric'})}
+  <p className="msg" role="alert">${err}</p><button className="btn" style=${{width:'100%'}} onClick=${go}>${reg?'Create account':'Log in'}</button></div></main>`;
+}
+function Root(){
+ const [u,setU]=React.useState(()=>{try{return JSON.parse(localStorage.getItem('aurum-session'))}catch(e){return null}});
+ const inn=x=>{try{localStorage.setItem('aurum-session',JSON.stringify(x))}catch(e){}setU(x);scrollTo(0,0)};
+ const out=()=>{try{localStorage.removeItem('aurum-session')}catch(e){}setU(null)};
+ return u?h`<${App} user=${u} out=${out}/>`:h`<${Auth} onIn=${inn}/>`;
+}
+ReactDOM.createRoot(document.getElementById('root')).render(h`<${Root}/>`);
+</script>
+</body>
+</html>
